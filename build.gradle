@@ -17,7 +17,7 @@ if (System.getProperty('os.name').toLowerCase().contains("mac")) {
     ext.IOS_VERSION = ""
 }
 
-ext.libraryVersions = [attach: '4.0.20']
+ext.libraryVersions = [attach: '4.0.22-SNAPSHOT']
 
 subprojects {
     apply plugin: "org.openjfx.javafxplugin"
@@ -34,6 +34,7 @@ subprojects {
     }
 
     javafx {
+        version = "20.0.2"
         modules 'javafx.graphics'
     }
 }
@@ -52,7 +53,7 @@ task copyModuleSources {
 javadoc {
     doFirst {
         subprojects.each {p -> classpath += p.sourceSets.main.compileClasspath }
-        options.addStringOption('-module-path', classpath.asPath)
+        options.modulePath = new ArrayList(classpath.files)
     }
     exclude("com/gluonhq/attach/*/impl")
     source fileTree("${buildDir}/modules/sources")
